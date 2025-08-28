@@ -1,0 +1,123 @@
+/* General reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* Split Layout */
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Left Side - Login Form */
+.login-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+}
+
+.login-box {
+  width: 80%;
+  max-width: 400px;
+}
+
+.logo {
+  display: block;
+  margin: 0 auto 20px;
+  height: 60px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 5px;
+  color: #1d4ed8;
+}
+
+.subtitle {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #666;
+  font-size: 14px;
+}
+
+label {
+  font-weight: bold;
+  color: #333;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border 0.3s;
+}
+
+input:focus {
+  border-color: #1d4ed8;
+  outline: none;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #1d4ed8;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #153e9f;
+}
+
+.error-message {
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 13px;
+  color: #888;
+}
+
+/* Right Side - Banner */
+.image-section {
+  flex: 1;
+  background: url("https://images.unsplash.com/photo-1580587771525-78b9dba3b914") no-repeat center center/cover;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+
+.tagline {
+  position: relative;
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+  font-weight: bold;
+  z-index: 1;
+}
