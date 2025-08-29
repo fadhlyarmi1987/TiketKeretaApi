@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/stasiun/{station}/edit', [StationController::class, 'edit'])->name('stasiun.edit');
     Route::put('/stasiun/{station}', [StationController::class, 'update'])->name('stasiun.update');
     Route::delete('/stasiun/{station}', [StationController::class, 'destroy'])->name('stasiun.destroy');
-    Route::get('/stations/search', [TripController::class, 'searchStations'])->name('stations.search');
+    Route::get('/stations/search', [StationController::class, 'searchStations'])->name('stations.search');
 
 
 

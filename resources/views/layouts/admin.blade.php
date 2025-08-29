@@ -9,7 +9,7 @@
   {{-- supaya file css tambahan dari setiap page bisa masuk --}}
   @yield('styles')
 </head>
-
+@stack('scripts')
 <body>
   <div class="dashboard-container">
       <!-- Sidebar -->

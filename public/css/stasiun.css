@@ -54,3 +54,40 @@
 .btn-delete:hover {
     transform: scale(1.2);
 }
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* tetap bisa geser kiri-kanan kalau kolom banyak */
+}
+
+.table-dashboard {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table-dashboard th,
+.table-dashboard td {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    white-space: nowrap;
+}
+
+.table-navigation {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.table-navigation button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    margin: 0 5px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.table-navigation button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+

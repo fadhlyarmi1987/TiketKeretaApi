@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 
 class StationController extends Controller
 {
-    public function index()
-{
-    $stations = Station::orderBy('code', 'asc')->get();
-    return view('admin.stasiun.index', compact('stations'));
-}
+    public function index(Request $request)
+    {
+        $stations = Station::orderBy('code', 'asc')->get();
+          $stations = Station::all(); 
+
+        return view('admin.stasiun.index', compact('stations'));
+    }
 
     public function create()
     {
@@ -31,6 +33,27 @@ class StationController extends Controller
         Station::create($request->all());
 
         return redirect()->route('stasiun.index')->with('success', 'Stasiun berhasil ditambahkan');
+    }
+
+    public function searchStations(Request $request)
+    {
+        $search = strtolower($request->q);
+
+        $stations = \App\Models\Station::whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
+            ->orWhereRaw('LOWER(city) LIKE ?', ["%{$search}%"])
+            ->orWhereRaw('LOWER(code) LIKE ?', ["%{$search}%"])
+            ->limit(20)
+            ->get(['id', 'name', 'city', 'code']);
+
+        // Debug dulu
+        // return response()->json($stations); 
+
+        return response()->json(
+            $stations->map(fn($s) => [
+                'id' => $s->id,
+                'text' => "{$s->name} - {$s->city} ({$s->code})"
+            ])
+        );
     }
 
     public function edit(Station $station)
@@ -53,15 +76,15 @@ class StationController extends Controller
         return redirect()->route('stasiun.index')->with('success', 'Stasiun berhasil diperbarui');
     }
     public function search(Request $request)
-{
-    $query = $request->get('q');
-    $stations = Station::where('name', 'like', "%$query%")
-                ->orWhere('city', 'like', "%$query%")
-                ->limit(20)
-                ->get();
+    {
+        $query = $request->get('q');
+        $stations = Station::where('name', 'like', "%$query%")
+            ->orWhere('city', 'like', "%$query%")
+            ->limit(20)
+            ->get();
 
-    return response()->json($stations);
-}
+        return response()->json($stations);
+    }
 
 
     public function destroy(Station $station)

@@ -11,6 +11,7 @@
     <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
         🚄 Tambah Data Trip
     </h2>
+    
 
     <form method="POST" action="{{ route('trips.store') }}">
         @csrf
@@ -57,7 +58,7 @@
                                 <input type="time" name="stations[0][departure_time]" class="input-field w-100">
                             </td>
                             <td class="text-center">
-                                <button type="button" class="btn-danger">🗑️</button>
+                                <button type="button" class="btn-danger">Hapus</button>
                             </td>
                         </tr>
                     </tbody>

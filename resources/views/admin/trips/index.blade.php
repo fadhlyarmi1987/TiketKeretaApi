@@ -8,7 +8,7 @@
 <div class="trip-index">
     <div class="header">
         <h2>🚆 Daftar Trip</h2>
-        <a href="{{ route('trips.create') }}" class="btn-add">➕ Tambah Trip</a>
+        <a href="{{ route('trips.create') }}" class="btn btn-secondary">➕ Tambah Trip</a>
     </div>
 
     @if(session('success'))

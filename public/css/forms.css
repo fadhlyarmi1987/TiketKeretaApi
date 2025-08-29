@@ -60,3 +60,37 @@
 .form-actions button:hover {
     background-color: #1d4ed8;
 }
+/* Tombol umum */
+.btn {
+    display: inline-block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 10px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Tombol Kembali */
+.btn-secondary {
+    background-color: #9ca3af;
+    color: #fff;
+    border: none;
+}
+.btn-secondary:hover {
+    background-color: #6b7280;
+}
+
+/* Tombol Simpan */
+.btn-submit {
+    background-color: #2563eb;
+    color: #fff;
+    border: none;
+}
+.btn-submit:hover {
+    background-color: #1d4ed8;
+}

@@ -107,9 +107,32 @@
 .btn-delete:hover {
     background: #c0392b;
 }
+.btn {
+    display: inline-block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 10px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Tombol Kembali */
+.btn-secondary {
+    background: #007bff;
+    color: #fff;
+    border: none;
+}
+.btn-secondary:hover {
+    background: #0056b3;
+}
 
 .empty {
     text-align: center;
     padding: 15px;
-    color: #777;
+    color: #777777;
 }

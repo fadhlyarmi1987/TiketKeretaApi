@@ -5,7 +5,7 @@
 
 {{-- Panggil CSS khusus untuk form --}}
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/forms.css') }}">
+<link rel="stylesheet" href="{{ asset('css/forms.css') }}">
 @endsection
 
 
@@ -44,8 +44,10 @@
         </div>
 
         <div class="form-actions">
-            <button type="submit">Simpan</button>
+            <a href="{{ route('kereta.index') }}" class="btn btn-secondary">⬅️ Kembali</a>
+            <button type="submit" class="btn btn-submit">💾 Simpan Trip</button>
         </div>
+
     </form>
 </div>
 @endsection
