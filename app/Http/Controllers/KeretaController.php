@@ -16,9 +16,20 @@ class KeretaController extends Controller
 
     public function create()
     {
-        $stations = \App\Models\Station::all(); // ambil semua stasiun
+        $stations = \App\Models\Station::all();
+
         return view('admin.kereta.create', compact('stations'));
     }
+
+    public function show($id)
+{
+    $kereta = Train::with(['carriages.seats' => function($q) {
+        $q->orderByRaw("CAST(regexp_replace(seat_number, '[^0-9]', '', 'g') AS INTEGER) ASC")
+          ->orderByRaw("regexp_replace(seat_number, '[^0-9]', '', 'g') ASC");
+    }])->findOrFail($id);
+
+    return view('admin.kereta.show', compact('kereta'));
+}
 
     public function store(Request $request)
     {

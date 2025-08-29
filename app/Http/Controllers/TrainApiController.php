@@ -15,6 +15,8 @@ class TrainApiController extends Controller
 
     public function show($id)
     {
+        $kereta = Train::with('carriages.seats')->findOrFail($id);
+        return view('admin.kereta.show', compact('kereta'));
         return Train::with(['carriages.seats'])->findOrFail($id);
     }
 
@@ -34,6 +36,8 @@ class TrainApiController extends Controller
         // return juga relasinya
         return $train->load(['carriages.seats']);
     }
+
+
 
     public function destroy($id)
     {

@@ -1,0 +1,140 @@
+/* trip-form.css */
+/* wrapper tombol tambah stasiun */
+.action-row {
+    margin-top: 0.8rem;
+    display: flex;
+    justify-content: flex-start;
+}
+
+/* wrapper tombol bawah form */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 1.5rem;
+}
+
+.trip-form {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    border: 1px solid #f1f1f1;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.trip-form h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #2c3e50;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Label */
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.4rem;
+}
+
+/* Input dan Select */
+.input-field {
+    display: block;
+    width: 100%;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    padding: 0.55rem 0.8rem;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-field:focus {
+    border-color: #2563eb;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
+}
+
+/* Tombol */
+.btn-submit {
+    background-color: #2563eb;
+    color: #fff;
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-submit:hover {
+    background-color: #1d4ed8;
+}
+
+.btn-secondary {
+    background-color: #9ca3af;
+    color: #fff;
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-secondary:hover {
+    background-color: #6b7280;
+}
+
+.btn-add {
+    background-color: #10b981;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    border: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: 600;
+}
+.btn-add:hover {
+    background-color: #059669;
+}
+
+.btn-danger {
+    background-color: #ef4444;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-danger:hover {
+    background-color: #dc2626;
+}
+
+/* Table */
+#stationTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+}
+
+#stationTable th, #stationTable td {
+    border: 1px solid #e5e7eb;
+    padding: 0.6rem;
+    font-size: 0.9rem;
+}
+
+#stationTable th {
+    background-color: #f9fafb;
+    font-weight: 600;
+    text-align: left;
+}
+
+#stationTable td select,
+#stationTable td input {
+    font-size: 0.9rem;
+}

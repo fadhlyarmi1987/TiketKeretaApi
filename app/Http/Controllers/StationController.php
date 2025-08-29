@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 class StationController extends Controller
 {
     public function index()
-    {
-        $stations = Station::all();
-        return view('admin.stasiun.index', compact('stations'));
-    }
+{
+    $stations = Station::orderBy('code', 'asc')->get();
+    return view('admin.stasiun.index', compact('stations'));
+}
 
     public function create()
     {
@@ -52,6 +52,17 @@ class StationController extends Controller
 
         return redirect()->route('stasiun.index')->with('success', 'Stasiun berhasil diperbarui');
     }
+    public function search(Request $request)
+{
+    $query = $request->get('q');
+    $stations = Station::where('name', 'like', "%$query%")
+                ->orWhere('city', 'like', "%$query%")
+                ->limit(20)
+                ->get();
+
+    return response()->json($stations);
+}
+
 
     public function destroy(Station $station)
     {

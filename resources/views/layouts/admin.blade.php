@@ -5,7 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>@yield('title') - Admin Panel</title>
   <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+
+  {{-- supaya file css tambahan dari setiap page bisa masuk --}}
+  @yield('styles')
 </head>
+
 <body>
   <div class="dashboard-container">
       <!-- Sidebar -->
@@ -17,6 +21,7 @@
               <li><a href="{{ route('dashboard') }}">🏠 Dashboard</a></li>
               <li><a href="{{ route('kereta.index') }}">🚆 Kereta</a></li>
               <li><a href="{{ route('stasiun.index') }}">🛤️ Stasiun</a></li>
+              <li><a href="{{ route('trips.index') }}">🛤️ Trip</a></li>
               <li><a href="{{ route('user.index') }}">👤 User</a></li>
           </ul>
       </aside>

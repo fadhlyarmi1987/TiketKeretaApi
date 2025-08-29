@@ -3,52 +3,49 @@
 @section('title', 'Tambah Kereta')
 @section('page_title', 'Tambah Data Kereta')
 
+{{-- Panggil CSS khusus untuk form --}}
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('css/forms.css') }}">
+@endsection
+
+
 @section('content')
-  <form method="POST" action="{{ route('kereta.store') }}">
-      @csrf
-      <div>
-          <label>Kode Kereta</label><br>
-          <input type="text" name="code" value="{{ old('code') }}" required>
-          @error('code') <small style="color:red;">{{ $message }}</small> @enderror
-      </div><br>
+<div class="form-container">
+    <form method="POST" action="{{ route('kereta.store') }}">
+        @csrf
 
-      <div>
-          <label>Nama Kereta</label><br>
-          <input type="text" name="name" value="{{ old('name') }}" required>
-          @error('name') <small style="color:red;">{{ $message }}</small> @enderror
-      </div><br>
+        <div class="form-group">
+            <label>Kode Kereta</label>
+            <input type="text" name="code" value="{{ old('code') }}" required>
+            @error('code') <small class="error">{{ $message }}</small> @enderror
+        </div>
 
-      <div>
-          <label>Kelas</label><br>
-          <select name="service_class" required>
-              <option value="">-- Pilih --</option>
-              <option value="ECONOMY">Ekonomi</option>
-              <option value="BUSINESS">Bisnis</option>
-              <option value="EXECUTIVE">Eksekutif</option>
-          </select>
-          @error('service_class') <small style="color:red;">{{ $message }}</small> @enderror
-      </div><br>
+        <div class="form-group">
+            <label>Nama Kereta</label>
+            <input type="text" name="name" value="{{ old('name') }}" required>
+            @error('name') <small class="error">{{ $message }}</small> @enderror
+        </div>
 
-      <div>
-          <label>Jumlah Gerbong</label><br>
-          <input type="number" name="carriage_count" value="{{ old('carriage_count') }}" min="1" max="20" required>
-          @error('carriage_count') <small style="color:red;">{{ $message }}</small> @enderror
-      </div><br>
+        <div class="form-group">
+            <label>Kelas</label>
+            <select name="service_class" required>
+                <option value="">-- Pilih --</option>
+                <option value="ECONOMY">Ekonomi</option>
+                <option value="BUSINESS">Bisnis</option>
+                <option value="EXECUTIVE">Eksekutif</option>
+            </select>
+            @error('service_class') <small class="error">{{ $message }}</small> @enderror
+        </div>
 
-      <div>
-    <label>Stasiun Tujuan</label><br>
-    <select name="destination_station_id" required>
-        <option value="">-- Pilih Stasiun --</option>
-        @foreach($stations as $station)
-            <option value="{{ $station->id }}">
-                {{ $station->name }} ({{ $station->city }})
-            </option>
-        @endforeach
-    </select>
-    @error('destination_station_id') <small style="color:red;">{{ $message }}</small> @enderror
-</div><br>
+        <div class="form-group">
+            <label>Jumlah Gerbong</label>
+            <input type="number" name="carriage_count" value="{{ old('carriage_count') }}" min="1" max="20" required>
+            @error('carriage_count') <small class="error">{{ $message }}</small> @enderror
+        </div>
 
-
-      <button type="submit">Simpan</button>
-  </form>
+        <div class="form-actions">
+            <button type="submit">Simpan</button>
+        </div>
+    </form>
+</div>
 @endsection

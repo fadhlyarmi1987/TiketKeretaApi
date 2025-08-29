@@ -1,12 +1,14 @@
 @extends('layouts.admin')
 
 @section('title', 'Daftar Kereta')
+@section('styles')
+<link rel="stylesheet" href="{{ asset('css/kereta.css') }}">
+@endsection
 @section('page_title', 'Daftar Kereta')
 
 @section('content')
 <div class="main-section">
     <div class="section-header">
-        <h3>Daftar Kereta</h3>
         <a href="{{ route('kereta.create') }}" class="btn-primary">➕ Tambah Kereta</a>
     </div>
 
@@ -30,12 +32,14 @@
                     <td>{{ $k->carriage_count }}</td>
                     <td class="action-buttons">
                         <a href="{{ route('kereta.edit', $k->id) }}" class="btn-edit" title="Edit">✏️</a>
+                        <a href="{{ route('kereta.show', $k->id) }}" class="btn-view" title="Lihat Gerbong">🚃</a>
                         <form action="{{ route('kereta.destroy', $k->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn-delete" title="Delete">🗑️</button>
                         </form>
                     </td>
+
                 </tr>
                 @endforeach
             </tbody>

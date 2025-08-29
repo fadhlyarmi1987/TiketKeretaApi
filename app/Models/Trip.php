@@ -14,20 +14,30 @@ class Trip extends Model
         'departure_time',
         'arrival_time',
         'status',
+        'train_name',
     ];
 
+    // Relasi ke Train
     public function train()
     {
         return $this->belongsTo(Train::class);
     }
 
-    public function originStation()
+    // Relasi ke Station (asal)
+    public function origin()
     {
         return $this->belongsTo(Station::class, 'origin_station_id');
     }
 
-    public function destinationStation()
+    // Relasi ke Station (tujuan)
+    public function destination()
     {
         return $this->belongsTo(Station::class, 'destination_station_id');
+    }
+
+    // Relasi ke trip_stations (stasiun yang dilewati)
+    public function tripStations()
+    {
+        return $this->hasMany(TripStation::class);
     }
 }
