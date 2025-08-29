@@ -40,4 +40,5 @@ class Trip extends Model
     {
         return $this->hasMany(TripStation::class);
     }
+    
 }

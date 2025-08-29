@@ -8,7 +8,7 @@
 
 @section('content')
 <div class="train-detail">
-    <h2>🚆 {{ $kereta->name }} ({{ $kereta->code }})</h2>
+    <h2>🚆 {{ $kereta->name }}</h2>
     <p>Kelas: <strong>{{ $kereta->service_class }}</strong></p>
     <p>Jumlah Gerbong: <strong>{{ $kereta->carriage_count }}</strong></p>
 

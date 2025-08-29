@@ -1,41 +1,71 @@
 @extends('layouts.admin')
 
 @section('title', 'Edit Trip')
-@section('page_title', 'Ubah Data Trip')
+@section('page_title', 'Edit Trip')
 
 @section('content')
-<form method="POST" action="{{ route('trips.update', $trip->id) }}">
-    @csrf
-    @method('PUT')
+<div class="trip-edit">
+    <h2>✏️ Edit Trip</h2>
 
-    <div>
-        <label>Kereta</label><br>
-        <select name="train_id" required>
-            <option value="">-- Pilih Kereta --</option>
-            @foreach($trains as $train)
-            <option value="{{ $train->id }}" {{ $trip->train_id == $train->id ? 'selected' : '' }}>
-                {{ $train->name }} ({{ $train->code }})
-            </option>
-            @endforeach
-        </select>
-    </div><br>
+    <form action="{{ route('trips.update', $trip->id) }}" method="POST">
+        @csrf
+        @method('PUT')
 
-    <div>
-        <label>Tanggal Perjalanan</label><br>
-        <input type="date" name="travel_date" value="{{ $trip->travel_date }}" required>
-    </div><br>
+        <div>
+            <label>Kereta</label>
+            <select name="train_id">
+                @foreach($trains as $train)
+                <option value="{{ $train->id }}" {{ $train->id == $trip->train_id ? 'selected' : '' }}>
+                    {{ $train->name }}
+                </option>
+                @endforeach
+            </select>
+        </div>
 
-    <div>
-        <label>Stasiun & Jadwal</label><br>
+        <div>
+            <label>Asal</label>
+            <select name="origin_station_id">
+                @foreach($stations as $station)
+                <option value="{{ $station->id }}" {{ $station->id == $trip->origin_station_id ? 'selected' : '' }}>
+                    {{ $station->name }} ({{ $station->city }})
+                </option>
+                @endforeach
+            </select>
+        </div>
 
-        {{-- template opsi stasiun --}}
-        <template id="stationOptionsTpl">
-            @foreach($stations as $station)
-            <option value="{{ $station->id }}">{{ $station->name }} ({{ $station->city }})</option>
-            @endforeach
-        </template>
+        <div>
+            <label>Tujuan</label>
+            <select name="destination_station_id">
+                @foreach($stations as $station)
+                <option value="{{ $station->id }}" {{ $station->id == $trip->destination_station_id ? 'selected' : '' }}>
+                    {{ $station->name }} ({{ $station->city }})
+                </option>
+                @endforeach
+            </select>
+        </div>
 
-        <table border="1" cellpadding="5" id="stationTable">
+        <div>
+            <label>Tanggal</label>
+            <input type="date" name="travel_date" value="{{ $trip->travel_date }}">
+        </div>
+
+        <div>
+            <label>Jam Berangkat</label>
+            <input type="time" name="departure_time" value="{{ $trip->departure_time }}">
+        </div>
+
+        <div>
+            <label>Jam Tiba</label>
+            <input type="time" name="arrival_time" value="{{ $trip->arrival_time }}">
+        </div>
+
+        <div>
+            <label>Status</label>
+            <input type="text" name="status" value="{{ $trip->status }}">
+        </div>
+
+        <h3>Jadwal Stasiun</h3>
+        <table id="stationTable">
             <thead>
                 <tr>
                     <th>Stasiun</th>
@@ -45,13 +75,12 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($trip->tripStations->sortBy('order') as $i => $ts)
+                @foreach($trip->tripStations as $i => $ts)
                 <tr>
                     <td>
-                        <select name="stations[{{ $i }}][station_id]" required>
-                            <option value="">-- Pilih Stasiun --</option>
+                        <select name="stations[{{ $i }}][station_id]">
                             @foreach($stations as $station)
-                            <option value="{{ $station->id }}" {{ $ts->station_id == $station->id ? 'selected' : '' }}>
+                            <option value="{{ $station->id }}" {{ $station->id == $ts->station_id ? 'selected' : '' }}>
                                 {{ $station->name }} ({{ $station->city }})
                             </option>
                             @endforeach
@@ -59,62 +88,48 @@
                     </td>
                     <td><input type="time" name="stations[{{ $i }}][arrival_time]" value="{{ $ts->arrival_time }}"></td>
                     <td><input type="time" name="stations[{{ $i }}][departure_time]" value="{{ $ts->departure_time }}"></td>
-                    <td><button type="button" onclick="removeRow(this)">Hapus</button></td>
+                    <td><button type="button" class="removeRow">❌</button></td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
-        <br>
-        <button type="button" onclick="addRow()">➕ Tambah Stasiun</button>
-    </div><br>
+        <button type="button" id="addRow">➕ Tambah Stasiun</button>
 
-    <button type="submit">💾 Update</button>
-</form>
+        <br><br>
+        <button type="submit">💾 Simpan Perubahan</button>
+    </form>
+</div>
 
+{{-- JS Tambah/Hapus Row --}}
 <script>
-    const stationOptionsHTML = document.getElementById('stationOptionsTpl').innerHTML;
+document.addEventListener("DOMContentLoaded", function () {
+    let rowIndex = {{ count($trip->tripStations) }};
 
-    function reindexRows() {
-        document.querySelectorAll('#stationTable tbody tr').forEach((tr, i) => {
-            tr.querySelectorAll('select, input').forEach(el => {
-                if (el.name.includes('station_id')) {
-                    el.name = `stations[${i}][station_id]`;
-                }
-                if (el.name.includes('arrival_time')) {
-                    el.name = `stations[${i}][arrival_time]`;
-                }
-                if (el.name.includes('departure_time')) {
-                    el.name = `stations[${i}][departure_time]`;
-                }
-            });
-        });
-    }
+    document.getElementById("addRow").addEventListener("click", function () {
+        let tableBody = document.querySelector("#stationTable tbody");
 
-    function addRow() {
-        const tbody = document.querySelector('#stationTable tbody');
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
+        let newRow = document.createElement("tr");
+        newRow.innerHTML = `
             <td>
-                <select required>
-                    <option value="">-- Pilih Stasiun --</option>
-                    ${stationOptionsHTML}
+                <select name="stations[${rowIndex}][station_id]">
+                    @foreach($stations as $station)
+                        <option value="{{ $station->id }}">{{ $station->name }} ({{ $station->city }})</option>
+                    @endforeach
                 </select>
             </td>
-            <td><input type="time"></td>
-            <td><input type="time"></td>
-            <td><button type="button" onclick="removeRow(this)">Hapus</button></td>
+            <td><input type="time" name="stations[${rowIndex}][arrival_time]"></td>
+            <td><input type="time" name="stations[${rowIndex}][departure_time]"></td>
+            <td><button type="button" class="removeRow">❌</button></td>
         `;
-        tbody.appendChild(tr);
-        reindexRows(); // 🔑 reindex setelah tambah
-    }
+        tableBody.appendChild(newRow);
+        rowIndex++;
+    });
 
-    function removeRow(btn) {
-        btn.closest('tr').remove();
-        reindexRows(); // 🔑 reindex setelah hapus
-    }
-
-    // panggil sekali saat load awal
-    reindexRows();
+    document.querySelector("#stationTable").addEventListener("click", function (e) {
+        if (e.target.classList.contains("removeRow")) {
+            e.target.closest("tr").remove();
+        }
+    });
+});
 </script>
-
 @endsection

@@ -16,7 +16,7 @@ class TrainApiController extends Controller
     public function show($id)
     {
         $kereta = Train::with('carriages.seats')->findOrFail($id);
-        return view('admin.kereta.show', compact('kereta'));
+        // return view('admin.kereta.show', compact('kereta'));
         return Train::with(['carriages.seats'])->findOrFail($id);
     }
 

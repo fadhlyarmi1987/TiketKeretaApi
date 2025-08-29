@@ -132,7 +132,7 @@
         <td><input type="time" name="stations[${index}][arrival_time]" class="input-field w-100"></td>
         <td><input type="time" name="stations[${index}][departure_time]" class="input-field w-100"></td>
         <td class="text-center">
-            <button type="button" class="btn-danger" onclick="removeRow(this)">🗑️</button>
+            <button type="button" class="btn-danger" onclick="removeRow(this)">Hapus</button>
         </td>
     `;
         tbody.appendChild(tr);

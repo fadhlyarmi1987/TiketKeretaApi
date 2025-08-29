@@ -24,7 +24,7 @@ return new class extends Migration {
             $table->time('departure_time')->nullable();
 
             // urutan stasiun dalam trip (1 = asal, terakhir = tujuan)
-            $table->unsignedInteger('station_order')->index();
+            $table->unsignedInteger('order')->index();
 
             $table->timestamps();
             $table->unique(['trip_id', 'station_id']); // supaya 1 stasiun tidak dobel di trip yg sama

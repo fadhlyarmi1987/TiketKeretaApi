@@ -49,7 +49,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($trip->tripStations()->orderBy('order')->get() as $ts)
+                                @foreach($trip->tripStations()->orderBy('station_order')->get() as $ts)
                                 <tr>
                                     <td>{{ $ts->order }}</td>
                                     <td>{{ $ts->station->name }} ({{ $ts->station->city }})</td>

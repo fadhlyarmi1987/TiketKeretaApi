@@ -56,7 +56,6 @@
 }
 .table-container {
     width: 100%;
-    overflow-x: auto; /* tetap bisa geser kiri-kanan kalau kolom banyak */
 }
 
 .table-dashboard {

@@ -44,8 +44,8 @@
         </div>
 
         <div class="form-actions">
-            <a href="{{ route('kereta.index') }}" class="btn btn-secondary">⬅️ Kembali</a>
-            <button type="submit" class="btn btn-submit">💾 Simpan Trip</button>
+            <a href="{{ route('kereta.index') }}" class="btn btn-secondary">Kembali</a>
+            <button type="submit" class="btn btn-submit">Simpan</button>
         </div>
 
     </form>
