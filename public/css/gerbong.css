@@ -78,3 +78,43 @@
     margin-top: 20px;
     display: inline-block;
 }
+/* ================= TRIP TABLE ================= */
+.trip-stations {
+    margin-top: 2rem;
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.trip-stations h3 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.trip-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.trip-table th,
+.trip-table td {
+    border: 1px solid #ddd;
+    padding: 0.6rem 0.8rem;
+    text-align: center;
+}
+
+.trip-table th {
+    background: #f7f7f7;
+    font-weight: 600;
+}
+
+.trip-table tr:nth-child(even) {
+    background: #fafafa;
+}
+
+.trip-table tr:hover {
+    background: #f0f7ff;
+}

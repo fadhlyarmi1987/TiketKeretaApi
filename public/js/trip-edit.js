@@ -1,37 +1,73 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let rowIndex = window.initialTripStationsCount || 0;
-    let stations = window.stationsData || [];
+  const table = document.getElementById("stationTable");
+  if (!table) return;
 
-    const addRowBtn = document.getElementById("addRow");
-    const tableBody = document.querySelector("#stationTable tbody");
+  const tbody = table.querySelector("tbody");
+  const addBtn = document.getElementById("addRow");
 
-    addRowBtn.addEventListener("click", function () {
-        let newRow = document.createElement("tr");
+  let rowIndex = parseInt(table.dataset.initialCount || "0", 10);
 
-        // Buat opsi stasiun secara dinamis
-        let options = stations.map(station =>
-            `<option value="${station.id}">${station.name} (${station.city})</option>`
-        ).join("");
+  // Ambil data stasiun dari <script>
+  let stations = [];
+  try {
+    const jsonEl = document.getElementById("stationsData");
+    stations = JSON.parse(jsonEl?.textContent || "[]");
+  } catch (e) {
+    console.error("Gagal parsing stationsData:", e);
+    stations = [];
+  }
 
-        newRow.innerHTML = `
-            <td>
-                <select name="stations[${rowIndex}][station_id]" class="form-control">
-                    ${options}
-                </select>
-            </td>
-            <td><input type="time" name="stations[${rowIndex}][arrival_time]" class="form-control"></td>
-            <td><input type="time" name="stations[${rowIndex}][departure_time]" class="form-control"></td>
-            <td><button type="button" class="btn btn-danger removeRow">❌</button></td>
-        `;
+  // Generate <option>
+  const makeOptions = () =>
+    stations
+      .map((s) => `<option value="${s.id}">${s.name} (${s.code}) | ${s.city}</option>`)
+      .join("");
 
-        tableBody.appendChild(newRow);
-        rowIndex++;
+  // Tambah baris baru
+  if (addBtn) {
+    addBtn.addEventListener("click", function () {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>
+          <select name="stations[${rowIndex}][station_id]" class="form-select station-select w-100">
+            ${makeOptions()}
+          </select>
+        </td>
+        <td>
+          <input type="time" name="stations[${rowIndex}][arrival_time]" class="form-control w-100">
+        </td>
+        <td>
+          <input type="time" name="stations[${rowIndex}][departure_time]" class="form-control w-100">
+        </td>
+        <td class="text-center">
+          <button type="button" class="btn btn-outline-danger btn-sm btn-hapus-row removeRow">
+            <i class="bi bi-trash"></i> Hapus
+          </button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+      rowIndex++;
+
+      // aktifkan select2 pada baris baru
+      $(tr).find(".station-select").select2({
+        placeholder: "Pilih stasiun...",
+        width: "100%"
+      });
     });
+  }
 
-    // Event untuk hapus row
-    tableBody.addEventListener("click", function (e) {
-        if (e.target.classList.contains("removeRow")) {
-            e.target.closest("tr").remove();
-        }
-    });
+  // Hapus baris
+  tbody.addEventListener("click", function (e) {
+    const btn = e.target.closest(".removeRow");
+    if (btn) {
+      const row = btn.closest("tr");
+      if (row) row.remove();
+    }
+  });
+
+  // Aktifkan select2 pada select yang sudah ada
+  $(".station-select").select2({
+    placeholder: "Pilih stasiun...",
+    width: "100%"
+  });
 });

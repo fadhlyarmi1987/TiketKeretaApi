@@ -25,7 +25,6 @@
                     <th>Kereta</th>
                     <th>Asal</th>
                     <th>Tujuan</th>
-                    <th>Tanggal</th>
                     <th>Jadwal Stasiun</th>
                     <th>Aksi</th>
                 </tr>
@@ -37,7 +36,6 @@
                     <td>{{ $trip->train->name }}</td>
                     <td>{{ $trip->origin->name }} ({{ $trip->origin->city }})</td>
                     <td>{{ $trip->destination->name }} ({{ $trip->destination->city }})</td>
-                    <td>{{ \Carbon\Carbon::parse($trip->travel_date)->format('d M Y') }}</td>
                     <td>
                         <table class="station-table">
                             <thead>
@@ -49,15 +47,22 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($trip->tripStations()->orderBy('station_order')->get() as $ts)
+                                @php
+                                $tripStations = $trip->tripStations()
+                                ->orderByRaw("COALESCE(arrival_time, departure_time)")
+                                ->get();
+                                @endphp
+
+                                @foreach($tripStations as $index => $ts)
                                 <tr>
-                                    <td>{{ $ts->order }}</td>
+                                    <td>{{ $index + 1 }}</td> <!-- otomatis nomor urut sesuai jam -->
                                     <td>{{ $ts->station->name }} ({{ $ts->station->city }})</td>
                                     <td>{{ $ts->arrival_time ?? '-' }}</td>
                                     <td>{{ $ts->departure_time ?? '-' }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
+
                         </table>
                     </td>
                     <td class="actions">

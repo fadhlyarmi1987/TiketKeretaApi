@@ -49,7 +49,7 @@ class TripController extends Controller
     {
         $request->validate([
             'train_id' => 'required|exists:trains,id',
-            'travel_date' => 'required|date',
+            'travel_date' => 'date',
             'stations' => 'required|array|min:2', // minimal asal & tujuan
             'stations.*.station_id' => 'required|exists:stations,id',
         ]);
@@ -100,7 +100,7 @@ class TripController extends Controller
             'train_id' => 'required|exists:trains,id',
             'origin_station_id' => 'required|exists:stations,id',
             'destination_station_id' => 'required|exists:stations,id',
-            'travel_date' => 'required|date',
+            'travel_date' => 'date',
             'departure_time' => 'nullable',
             'arrival_time' => 'nullable',
             'status' => 'nullable|string',

@@ -33,11 +33,13 @@
                     <td class="action-buttons">
                         <a href="{{ route('kereta.edit', $k->id) }}" class="btn-edit" title="Edit">✏️</a>
                         <a href="{{ route('kereta.show', $k->id) }}" class="btn-view" title="Lihat Gerbong">🚃</a>
-                        <form action="{{ route('kereta.destroy', $k->id) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('kereta.destroy', $k->id) }}" method="POST" style="display:inline ; "onsubmit="return confirm('Yakin hapus trip ini?')">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn-delete" title="Delete">🗑️</button>
                         </form>
+
+                        
                     </td>
 
                 </tr>

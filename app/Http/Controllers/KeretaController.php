@@ -7,30 +7,34 @@ use App\Models\Train;
 
 class KeretaController extends Controller
 {
+//=======INDEX=======
     public function index()
     {
         $kereta = Train::latest()->get();
         return view('admin.kereta.index', compact('kereta'));
     }
 
-
+//==========CREATE==========
     public function create()
     {
         $stations = \App\Models\Station::all();
 
         return view('admin.kereta.create', compact('stations'));
     }
-
+//==========SHOW==========
     public function show($id)
 {
-    $kereta = Train::with(['carriages.seats' => function($q) {
-        $q->orderByRaw("CAST(regexp_replace(seat_number, '[^0-9]', '', 'g') AS INTEGER) ASC")
-          ->orderByRaw("regexp_replace(seat_number, '[^0-9]', '', 'g') ASC");
-    }])->findOrFail($id);
+    $kereta = Train::with([
+        'carriages.seats' => function ($q) {
+            $q->orderByRaw("CAST(regexp_replace(seat_number, '[^0-9]', '', 'g') AS INTEGER) ASC")
+              ->orderByRaw("regexp_replace(seat_number, '[^0-9]', '', 'g') ASC");
+        },
+        'trips.tripStations.station'
+    ])->findOrFail($id);
 
     return view('admin.kereta.show', compact('kereta'));
 }
-
+//==========STORE==========
     public function store(Request $request)
     {
         $request->validate([

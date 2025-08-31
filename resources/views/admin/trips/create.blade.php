@@ -26,13 +26,7 @@
                 @endforeach
             </select>
         </div>
-
-        {{-- Tanggal --}}
-        <div class="mb-4">
-            <label for="travel_date" class="form-label fw-semibold">📅 Tanggal Perjalanan</label>
-            <input type="date" id="travel_date" name="travel_date" class="input-field w-100" required>
-        </div>
-
+        
         {{-- Stasiun & Jadwal --}}
         <div class="mb-4">
             <label class="form-label fw-semibold">🛤️ Rute Perjalanan (Stasiun & Jadwal)</label>

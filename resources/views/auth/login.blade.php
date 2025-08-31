@@ -5,14 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Login</title>
   <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+  <style>
+    .password-container {
+      position: relative;
+      width: 100%;
+    }
 
+    .password-container input {
+      width: 100%;
+      padding-right: 40px; /* kasih space buat icon */
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 18px;
+      color: #555;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <!-- Left Side (Login Form) -->
     <div class="login-section">
       <div class="login-box">
-        <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fid.pinterest.com%2Fpin%2Fdownload-logo-kai-kereta-api-indonesia-vektor-ai--772789617309640652%2F&psig=AOvVaw1JfkVTAyXZztFDFhoFHzjP&ust=1756473475198000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCKj1o97LrY8DFQAAAAAdAAAAABAE" alt="Logo" class="logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Logo_PT_Kereta_Api_Indonesia_%28Persero%29.svg/2560px-Logo_PT_Kereta_Api_Indonesia_%28Persero%29.svg.png" alt="Logo" class="logo">
         <h2>Admin Login</h2>
         <p class="subtitle">Sign in to access the dashboard</p>
 
@@ -29,7 +49,10 @@
           <input type="email" name="email" required>
 
           <label>Password</label>
-          <input type="password" name="password" required>
+          <div class="password-container">
+            <input type="password" id="password" name="password" required>
+            <span class="toggle-password" onclick="togglePassword()">👁️</span>
+          </div>
 
           <button type="submit">Login</button>
         </form>
@@ -44,5 +67,19 @@
       <h1 class="tagline">Welcome to Admin Portal</h1>
     </div>
   </div>
+
+  <script>
+    function togglePassword() {
+      const passwordInput = document.getElementById("password");
+      const toggleIcon = document.querySelector(".toggle-password");
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleIcon.textContent = "🙈"; // icon berubah
+      } else {
+        passwordInput.type = "password";
+        toggleIcon.textContent = "👁️";
+      }
+    }
+  </script>
 </body>
 </html>

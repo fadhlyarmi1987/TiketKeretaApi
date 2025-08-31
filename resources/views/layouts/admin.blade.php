@@ -23,6 +23,7 @@
               <li><a href="{{ route('stasiun.index') }}">🛤️ Stasiun</a></li>
               <li><a href="{{ route('trips.index') }}">🛤️ Trip</a></li>
               <li><a href="{{ route('user.index') }}">👤 User</a></li>
+              <li><a href="{{ route('booking.create') }}">Pesan</a></li>
           </ul>
       </aside>
 

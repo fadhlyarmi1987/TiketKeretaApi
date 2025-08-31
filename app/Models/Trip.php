@@ -10,7 +10,6 @@ class Trip extends Model
         'train_id',
         'origin_station_id',
         'destination_station_id',
-        'travel_date',
         'departure_time',
         'arrival_time',
         'status',
@@ -40,5 +39,9 @@ class Trip extends Model
     {
         return $this->hasMany(TripStation::class);
     }
-    
+
+    public function stations()
+    {
+        return $this->hasMany(TripStation::class);
+    }
 }

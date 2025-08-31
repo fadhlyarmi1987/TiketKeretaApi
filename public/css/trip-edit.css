@@ -1,0 +1,163 @@
+/* Card container styling */
+.card {
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    background: #ffffff;
+}
+
+/* Card header */
+.card-header {
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(90deg, #0d6efd, #3b82f6);
+    color: #fff;
+    border-bottom: none;
+}
+
+/* Form label */
+.form-label {
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.35rem;
+    display: block;
+}
+
+/* Input & Select full width */
+.form-control,
+.form-select {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 0.95rem;
+    background-color: #f9fafb;
+}
+
+/* Focus state */
+.form-control:focus,
+.form-select:focus {
+    border-color: #0d6efd;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+}
+
+/* Section title (jadwal stasiun) */
+h5 {
+    font-weight: 600;
+    color: #0d6efd;
+    margin-bottom: 0.8rem;
+}
+
+/* Table styling */
+.table {
+    border: none;
+    margin-bottom: 1rem;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.table thead {
+    background: #f3f4f6;
+    font-weight: 600;
+    color: #374151;
+}
+
+/* Table row hover */
+.table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+/* Button spacing */
+#addRow {
+    display: inline-block;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    padding: 0.55rem 1rem;
+    font-weight: 500;
+}
+
+/* Action buttons at the bottom */
+.d-flex.justify-content-between {
+    margin-top: 1.5rem;
+}
+
+/* Trash button small */
+.btn-sm {
+    padding: 0.35rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .row > .col-md-6 {
+        margin-bottom: 1rem;
+    }
+
+    .d-flex.justify-content-between {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+}
+.table th, .table td {
+    vertical-align: middle;
+}
+
+.btn-tambah-stasiun {
+    background: #198754;
+    color: #fff;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 600;
+}
+
+.btn-tambah-stasiun:hover {
+    background: #157347;
+    color: #fff;
+}
+
+.btn-kembali {
+    background: #6c757d;
+    color: #fff;
+    border-radius: 8px;
+    padding: 8px 16px;
+}
+
+.btn-kembali:hover {
+    background: #5c636a;
+    color: #fff;
+}
+
+.btn-simpan {
+    background: #0d6efd;
+    color: #fff;
+    border-radius: 8px;
+    padding: 8px 16px;
+}
+
+.btn-simpan:hover {
+    background: #0b5ed7;
+    color: #fff;
+}
+
+/* Select2 styling agar konsisten */
+.select2-container .select2-selection--single {
+    height: 38px !important;
+    border-radius: 6px !important;
+    border: 1px solid #ced4da !important;
+    padding: 4px 8px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #212529 !important;
+    line-height: 28px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 36px !important;
+}
