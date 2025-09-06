@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Booking extends Model
@@ -33,9 +35,9 @@ class Booking extends Model
         return $this->belongsTo(Seat::class);
     }
 
+    // Relasi ke Penumpang
     public function passengers()
-{
-    return $this->hasMany(Passenger::class);
-}
-
+    {
+        return $this->hasMany(Passenger::class);
+    }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\TripStationController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\SeatController;
+use App\Http\Controllers\Api\PesanController;
 
 // ===== PUBLIC ROUTES =====
 // Auth
@@ -47,4 +48,6 @@ Route::post('/login', [UserController::class, 'login']);
     Route::post('/trips/search', [BookingController::class, 'search']);
 
 
+
+Route::post('/pesan', [PesanController::class, 'store']);
 // });

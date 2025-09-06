@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Booking;
 use App\Models\Ticket;
 use App\Models\Passenger;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Seat;
 use App\Models\Trip;
 
@@ -18,64 +20,62 @@ class BookingController extends Controller
     /**
      * Buat pesanan tiket
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'trip_id' => 'required|exists:trips,id',
-            'seats' => 'required|array|min:1',
-            'passengers' => 'required|array|min:1',
-            'passengers.*.name' => 'required|string',
-            'passengers.*.identity_number' => 'required|string',
+
+   public function store(Request $request)
+{
+    // Validasi input data
+    $validator = Validator::make($request->all(), [
+        'user_id' => 'required|integer|exists:users,id',
+        'trip_id' => 'required|integer|exists:trips,id',
+        'departure_date' => 'required|date',
+        'seat_id' => 'required|integer|exists:seats,id', // Validasi seat_id
+        'passengers' => 'required|array|min:1',
+        'passengers.*.name' => 'required|string|max:255',
+        'passengers.*.nik' => 'required|string|max:20',
+        'passengers.*.jenis_kelamin' => 'required|string|max:10',
+        'passengers.*.tanggal_lahir' => 'required|date',
+        'passengers.*.seat_id' => 'required|integer|exists:seats,id', // Validasi seat_id
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'error' => $validator->errors(),
+        ], 400);
+    }
+
+    // Menyimpan booking
+    try {
+        $booking = Booking::create([
+            'user_id' => $request->user_id,
+            'trip_id' => $request->trip_id,
+            'departure_date' => $request->departure_date,
+            'status' => 'pending', // Status awal
+            'seat_id' => $request->seat_id,  // Pastikan seat_id disertakan
         ]);
 
-        $user = Auth::user();
-
-        return DB::transaction(function () use ($request, $user) {
-            // buat booking
-            $booking = Booking::create([
-                'user_id' => $user->id,
-                'trip_id' => $request->trip_id,
-                'status' => 'pending'
+        // Menyimpan data penumpang
+        foreach ($request->passengers as $passengerData) {
+            Passenger::create([
+                'name' => $passengerData['name'],
+                'nik' => $passengerData['nik'],
+                'jenis_kelamin' => $passengerData['jenis_kelamin'],
+                'tanggal_lahir' => $passengerData['tanggal_lahir'],
+                'booking_id' => $booking->id,
+                'seat_id' => $passengerData['seat_id'],  // Menyimpan seat_id untuk setiap penumpang
             ]);
+        }
 
-            foreach ($request->passengers as $index => $p) {
-                // buat penumpang
-                $passenger = Passenger::create([
-                    'name' => $p['name'],
-                    'identity_number' => $p['identity_number']
-                ]);
-
-                // ambil seat sesuai index penumpang
-                $seatId = $request->seats[$index] ?? null;
-                if (!$seatId) {
-                    throw new \Exception("Seat untuk penumpang {$p['name']} tidak ada.");
-                }
-
-                $seat = Seat::findOrFail($seatId);
-
-                // pastikan seat belum dipakai di booking confirmed
-                $alreadyBooked = Ticket::where('seat_id', $seat->id)
-                    ->whereHas('booking', function ($q) {
-                        $q->where('status', 'confirmed');
-                    })->exists();
-
-                if ($alreadyBooked) {
-                    throw new \Exception("Seat {$seat->id} sudah terisi.");
-                }
-
-                // buat tiket
-                Ticket::create([
-                    'booking_id' => $booking->id,
-                    'seat_id' => $seat->id,
-                    'passenger_id' => $passenger->id
-                ]);
-            }
-
-            return response()->json([
-                'booking' => $booking->load('tickets.passenger', 'tickets.seat')
-            ], 201);
-        });
+        return response()->json([
+            'message' => 'Booking berhasil dibuat!',
+            'booking' => $booking,
+        ], 201);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Terjadi kesalahan saat membuat booking. ' . $e->getMessage(),
+        ], 500);
     }
+}
+
 
     public function search(Request $request)
     {

@@ -75,6 +75,28 @@ class BookingController extends Controller
             ->with('success', 'Booking berhasil dibuat! Silakan pilih kursi.');
     }
 
+    public function confirm(Request $request, Booking $booking)
+    {
+        if (!$request->passengers) {
+            return back()->with('error', 'Silakan pilih kursi untuk semua penumpang!');
+        }
+
+        foreach ($request->passengers as $data) {
+            $passenger = $booking->passengers()->find($data['id']);
+            if ($passenger) {
+                $passenger->seat_id = $data['seat_id'];
+                $passenger->save();
+            }
+        }
+
+        $booking->status = 'CONFIRMED';
+        $booking->user_id = Auth::id();
+        $booking->save();
+
+        return redirect()->route('booking.ticket', $booking->id)
+            ->with('success', "Pesanan berhasil dikonfirmasi untuk semua penumpang.");
+    }
+
 
     public function show($id)
     {
@@ -112,28 +134,7 @@ class BookingController extends Controller
     }
 
 
-    public function confirm(Request $request, Booking $booking)
-    {
-        if (!$request->passengers) {
-            return back()->with('error', 'Silakan pilih kursi untuk semua penumpang!');
-        }
-
-        foreach ($request->passengers as $data) {
-            $passenger = $booking->passengers()->find($data['id']);
-            if ($passenger) {
-                $passenger->seat_id = $data['seat_id'];
-                $passenger->save();
-            }
-        }
-
-        $booking->status = 'CONFIRMED';
-        $booking->user_id = Auth::id();
-        $booking->save();
-
-        return redirect()->route('booking.ticket', $booking->id)
-            ->with('success', "Pesanan berhasil dikonfirmasi untuk semua penumpang.");
-    }
-
+    
 
     public function ticket(Booking $booking)
     {
