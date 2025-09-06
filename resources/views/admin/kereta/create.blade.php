@@ -38,6 +38,16 @@
         </div>
 
         <div class="form-group">
+            <label>Tipe</label>
+            <select name="type" required>
+                <option value="">-- Pilih --</option>
+                <option value="lokal">Lokall</option>
+                <option value="AK">Antar Kota</option>
+            </select>
+            @error('type') <small class="error">{{ $message }}</small> @enderror
+        </div>
+
+        <div class="form-group">
             <label>Jumlah Gerbong</label>
             <input type="number" name="carriage_count" value="{{ old('carriage_count') }}" min="1" max="20" required>
             @error('carriage_count') <small class="error">{{ $message }}</small> @enderror

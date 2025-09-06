@@ -4,15 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Passenger extends Model
+class BookingPassenger extends Model
 {
     protected $fillable = [
-        'booking_id',
-        'name',
-        'nik',
-        'jenis_kelamin',
-        'tanggal_lahir',
-        'seat_id',
+        'booking_id', 'name', 'gender','nik', 'birth_date', 'seat_id'
     ];
 
     public function booking()

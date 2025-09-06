@@ -1,0 +1,45 @@
+.form-pemesanan {
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    margin: auto;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-control {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 6px rgba(13, 110, 253, 0.25);
+}
+
+.btn-cari-tiket {
+    background-color: #0d6efd;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 14px 40px;
+    font-size: 16px;
+    border: none;
+    transition: all 0.3s ease;
+    margin-top: 10px; /* biar agak turun */
+}
+
+.btn-cari-tiket:hover {
+    background-color: #084298;
+    transform: scale(1.05);
+}
+

@@ -3,52 +3,39 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
 class Booking extends Model
 {
     protected $fillable = [
-        'uuid',
+        'pnr',
         'user_id',
         'trip_id',
-        'pnr',
+        'seat_id',
+        'departure_date',
         'status',
-        'total_amount',
-        'total_tax',
-        'total_fee',
-        'expires_at'
     ];
 
-    protected static function booted()
-    {
-        static::creating(function ($booking) {
-            $booking->uuid = (string) Str::uuid();
-            $booking->pnr = strtoupper(Str::random(8));
-        });
-    }
-
+    // Relasi ke User
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    // Relasi ke Trip
     public function trip()
     {
         return $this->belongsTo(Trip::class);
     }
 
+    // Relasi ke Seat
+    public function seat()
+    {
+        return $this->belongsTo(Seat::class);
+    }
+
     public function passengers()
-    {
-        return $this->hasMany(Passenger::class);
-    }
+{
+    return $this->hasMany(Passenger::class);
+}
 
-    public function tickets()
-    {
-        return $this->hasMany(Ticket::class);
-    }
-
-    public function payments()
-    {
-        return $this->hasMany(Payment::class);
-    }
 }

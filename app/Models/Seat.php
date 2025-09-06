@@ -17,4 +17,16 @@ class Seat extends Model
     {
         return $this->belongsTo(Carriage::class);
     }
+
+
+    //relasi ke Bookings
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    public function passengers()
+    {
+        return $this->hasMany(Passenger::class, 'seat_id');
+    }
 }

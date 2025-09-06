@@ -44,4 +44,16 @@ class Trip extends Model
     {
         return $this->hasMany(TripStation::class);
     }
+
+    public function availableSeats($date = null)
+{
+    $date = $date ?? now()->toDateString();
+
+    return Seat::whereHas('carriage.train.trips', function ($q) {
+            $q->where('id', $this->id);
+        })
+        ->whereDoesntHave('passengers', function ($q) use ($date) {
+            $q->where('departure_date', $date);
+        });
+}
 }

@@ -82,7 +82,6 @@
     </div>
 
 
-
     <a href="{{ route('kereta.index') }}" class="btn-primary back-btn">⬅️ Kembali</a>
 </div>
 @endsection

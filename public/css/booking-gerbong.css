@@ -1,0 +1,102 @@
+.train-carriages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.carriage {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #f9f9f9;
+    padding: 15px;
+    width: 320px;
+}
+
+.carriage-header {
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.carriage-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.seat-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.seat-group {
+    display: flex;
+    gap: 4px;
+}
+
+.aisle {
+    width: 20px;k
+}
+
+.seat {
+    display: inline-block;
+    margin: 4px;
+}
+
+.seat-btn {
+    display: block;
+    width: 50px;
+    height: 40px;
+    background: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 40px;
+    transition: 0.2s;
+}
+
+.seat.booked {
+    background: #e74c3c;
+    color: white;
+    font-weight: bold;
+}
+
+.seat.available {
+    background: #2ecc71;
+    color: white;
+}
+
+.seat-btn:hover {
+    background: #219150;
+}
+
+.seat-btn.selected {
+    background: #95a5a6;
+    /* abu */
+}
+
+.seat-btn.selected {
+    background-color: #007bff !important;
+    /* biru untuk yang dipilih */
+}
+
+.seat.booked span {
+    display: block;
+    width: 50px;
+    height: 40px;
+    background: #e74c3c;
+    /* merah untuk booked */
+    color: white;
+    border-radius: 6px;
+    line-height: 40px;
+    font-weight: bold;
+}
+
+.seat-btn.booked {
+    background-color: #6c757d !important;
+    /* abu-abu */
+    cursor: not-allowed;
+}

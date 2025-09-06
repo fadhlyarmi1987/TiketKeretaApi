@@ -11,7 +11,8 @@ class Train extends Model
         'code',
         'name',
         'service_class',
-        'carriage_count', // ini wajib sama persis dengan nama kolom di tabel
+        'carriage_count',
+        'type',
     ];
 
     public function carriages()

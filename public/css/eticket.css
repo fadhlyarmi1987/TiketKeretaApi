@@ -1,0 +1,53 @@
+.eticket {
+    max-width: 800px;
+    margin: auto;
+    background: #fff;
+    border: 2px solid #e5e5e5;
+    border-radius: 16px;
+    padding: 24px;
+    font-family: 'Arial', sans-serif;
+    position: relative;
+}
+.eticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px dashed #ccc;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+}
+.eticket-header h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+}
+.eticket-section {
+    margin-bottom: 20px;
+}
+.eticket-section h4 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #444;
+    border-left: 4px solid #007bff;
+    padding-left: 8px;
+}
+.eticket-info p {
+    margin: 2px 0;
+}
+.qr-code {
+    position: absolute;
+    top: 120px;
+    right: 20px;
+    border: 1px solid #ddd;
+    padding: 6px;
+    border-radius: 8px;
+    background: #fafafa;
+}
+.ticket-footer {
+    text-align: center;
+    border-top: 2px dashed #ccc;
+    padding-top: 10px;
+    font-size: 12px;
+    color: #777;
+}

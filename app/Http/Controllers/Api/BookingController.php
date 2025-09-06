@@ -77,6 +77,38 @@ class BookingController extends Controller
         });
     }
 
+    public function search(Request $request)
+    {
+        $request->validate([
+            'origin_id' => 'required|exists:stations,id',
+            'destination_id' => 'required|exists:stations,id|different:origin_id',
+            'departure_date' => 'required|date',
+        ]);
+
+        $originId = $request->origin_id;
+        $destinationId = $request->destination_id;
+        $date = $request->departure_date;
+
+        $trips = Trip::with(['train', 'tripStations.station'])
+            ->whereHas('tripStations', fn($q) => $q->where('station_id', $originId))
+            ->whereHas('tripStations', fn($q) => $q->where('station_id', $destinationId))
+            ->get()
+            ->filter(function ($trip) use ($originId, $destinationId) {
+                $originOrder = $trip->tripStations->firstWhere('station_id', $originId)?->station_order;
+                $destOrder   = $trip->tripStations->firstWhere('station_id', $destinationId)?->station_order;
+                return $originOrder !== null && $destOrder !== null && $originOrder < $destOrder;
+            })
+            ->values();
+
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Hasil pencarian trip',
+            'data' => $trips,
+        ]);
+    }
+
+
     /**
      * Lihat detail booking
      */

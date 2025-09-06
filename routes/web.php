@@ -1,10 +1,13 @@
 <?php
 
-
-
+use App\Http\Controllers\Api\BookingController as ApiBookingController;
+use App\Http\Controllers\Api\StationController as ApiStationController;
+use App\Http\Controllers\Api\TrainController;
+use App\Http\Controllers\Api\TripStationController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BookingController as ControllersBookingController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KeretaController;
 use App\Http\Controllers\StationController;
@@ -14,7 +17,6 @@ use App\Http\Controllers\TripController;
 Route::get('/', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
 
 // Dashboard (hanya bisa diakses kalau sudah login)
 Route::middleware('auth')->group(function () {
@@ -46,11 +48,26 @@ Route::middleware('auth')->group(function () {
     Route::get('/stations/search', [StationController::class, 'searchStations'])->name('stations.search');
 
     //================BOOKING==============
-    Route::get('/booking', [ControllersBookingController::class, 'index'])->name('booking.create');
-    Route::post('/booking', [ControllersBookingController::class, 'store'])->name('booking.store');
+    Route::post('/booking/{trip}/book', [BookingController::class, 'book'])->name('booking.book');
+    Route::get('/booking', [BookingController::class, 'index'])->name('booking.create');
+    Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
+    Route::get('/booking/{booking}', [BookingController::class, 'show'])->name('booking.show');
+    Route::post('/booking/{booking}/seat/{seat}', [BookingController::class, 'selectSeat'])
+        ->name('booking.selectSeat');
+    Route::post('/booking/{booking}/confirm', [BookingController::class, 'confirm'])->name('booking.confirm');
+    Route::get('/booking/{booking}/ticket', [BookingController::class, 'ticket'])->name('booking.ticket');
+    Route::post('/booking/{trip}/passenger', [BookingController::class, 'passengerDetail'])->name('booking.passenger');
+    Route::get('/booking/{trip}/seat-select', [BookingController::class, 'seatSelect'])->name('booking.seat.select');
+    Route::post('/booking/{booking}/seat-confirm', [BookingController::class, 'seatConfirm'])->name('booking.seat.confirm');
+    Route::get('booking/{booking}/seat/{seat}', [BookingController::class, 'selectSeat'])
+        ->name('booking.selectSeat');
+    Route::get('/bookings/my-tickets', [BookingController::class, 'myTickets'])
+        ->middleware('auth')
+        ->name('booking.tickets');
 
     Route::get('/user', function () {
         return view('admin.user.index');
     })->name('user.index');
-    //=======API========
+
+    
 });

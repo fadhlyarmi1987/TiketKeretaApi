@@ -29,59 +29,59 @@ class UserController extends Controller
 
     // Register user baru
     public function register(Request $request)
-{
-    $validated = $request->validate([
-        'name'          => 'required|string|max:100',
-        'email'         => 'required|string|email|unique:users,email',
-        'password'      => 'required|string|min:6',
-        'no_telp'       => 'nullable|string|max:20',
-        'nik'           => 'nullable|string|max:20|unique:users,nik',
-        'jenis_kelamin' => 'nullable|in:Laki-laki,Perempuan',
-        'tanggal_lahir' => 'nullable|date',
-    ]);
+    {
+        $validated = $request->validate([
+            'name'          => 'required|string|max:100',
+            'email'         => 'required|string|email|unique:users,email',
+            'password'      => 'required|string|min:6',
+            'no_telp'       => 'nullable|string|max:20',
+            'nik'           => 'nullable|string|max:20|unique:users,nik',
+            'jenis_kelamin' => 'nullable|in:Laki-laki,Perempuan',
+            'tanggal_lahir' => 'nullable|date',
+        ]);
 
-    $user = User::create([
-        'name'          => $validated['name'],
-        'email'         => $validated['email'],
-        'password'      => Hash::make($validated['password']),
-        'role'          => 'user', // default otomatis
-        'no_telp'       => $validated['no_telp'] ?? null,
-        'nik'           => $validated['nik'] ?? null,
-        'jenis_kelamin' => $validated['jenis_kelamin'] ?? null,
-        'tanggal_lahir' => $validated['tanggal_lahir'] ?? null,
-    ]);
+        $user = User::create([
+            'name'          => $validated['name'],
+            'email'         => $validated['email'],
+            'password'      => Hash::make($validated['password']),
+            'role'          => 'user', // default otomatis
+            'no_telp'       => $validated['no_telp'] ?? null,
+            'nik'           => $validated['nik'] ?? null,
+            'jenis_kelamin' => $validated['jenis_kelamin'] ?? null,
+            'tanggal_lahir' => $validated['tanggal_lahir'] ?? null,
+        ]);
 
-    return response()->json([
-        'message' => 'User berhasil dibuat',
-        'user' => $user
-    ], 201);
-}
+        return response()->json([
+            'message' => 'User berhasil dibuat',
+            'user' => $user
+        ], 201);
+    }
 
     public function login(Request $request)
     {
-    $credentials = $request->validate([
-        'email' => 'required|email',
-        'password' => 'required'
-    ]);
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
 
-    $user = User::where('email', $credentials['email'])->first();
+        $user = User::where('email', $credentials['email'])->first();
 
-    if (! $user || ! Hash::check($credentials['password'], $user->password)) {
-        return response()->json(['message' => 'Email atau password salah'], 401);
+        if (! $user || ! Hash::check($credentials['password'], $user->password)) {
+            return response()->json(['message' => 'Email atau password salah'], 401);
+        }
+
+        // Hapus semua token lama biar single login
+        $user->tokens()->delete();
+
+        // Buat token baru
+        $token = $user->createToken('flutter-login')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Login berhasil',
+            'token' => $token,
+            'user' => $user
+        ]);
     }
-
-    // Hapus semua token lama biar single login
-    $user->tokens()->delete();
-
-    // Buat token baru
-    $token = $user->createToken('flutter-login')->plainTextToken;
-
-    return response()->json([
-        'message' => 'Login berhasil',
-        'token' => $token,
-        'user' => $user
-    ]);
-}
 
     // Logout
     public function logout(Request $request)
