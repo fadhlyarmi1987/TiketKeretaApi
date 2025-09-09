@@ -17,7 +17,7 @@ class PesanController extends Controller
             'user_id' => 'required|integer|exists:users,id',
             'trip_id' => 'required|integer|exists:trips,id',
             'departure_date' => 'required|date|after_or_equal:today',
-            'seat_id' => 'required|integer|exists:seats,id', // Validasi seat_id untuk booking utama
+            'seat_id' => 'required|integer|exists:seats,id',
             'passengers' => 'required|array|min:1',
             'passengers.*.name' => 'required|string|max:255',
             'passengers.*.nik' => 'required|string|max:20',
@@ -42,7 +42,7 @@ class PesanController extends Controller
                 'user_id' => $request->user_id,
                 'trip_id' => $request->trip_id,
                 'departure_date' => $request->departure_date,
-                'status' => 'CONFIRM',
+                'status' => 'PENDING',
                 'seat_id' => $request->seat_id,  // Pastikan seat_id disertakan di booking
             ]);
 
@@ -60,5 +60,49 @@ class PesanController extends Controller
                 'error' => 'Terjadi kesalahan saat membuat pemesanan. ' . $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function updateStatusByUser(Request $request, $userId)
+{
+    $validator = Validator::make($request->all(), [
+        'status' => 'required|in:PENDING,CONFIRMED,CANCELLED',
+        'trip_id' => 'required|integer|exists:trips,id',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'error' => $validator->errors(),
+        ], 400);
+    }
+
+    try {
+        // update semua booking untuk user + trip tersebut
+        $affected = Booking::where('user_id', $userId)
+            ->where('trip_id', $request->trip_id)
+            ->update(['status' => $request->status]);
+
+        if ($affected === 0) {
+            return response()->json([
+                'error' => 'Tidak ada booking yang ditemukan',
+            ], 404);
+        }
+
+        return response()->json([
+            'message' => "Status $affected booking diperbarui!",
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Gagal memperbarui status booking. ' . $e->getMessage(),
+        ], 500);
+    }
+}
+
+    public function confirm($id)
+    {
+        $booking = Booking::findOrFail($id);
+        $booking->status = 'confirmed';
+        $booking->save();
+
+        return response()->json(['message' => 'Booking confirmed']);
     }
 }

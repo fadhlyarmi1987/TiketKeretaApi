@@ -49,5 +49,7 @@ Route::post('/login', [UserController::class, 'login']);
 
 
 
-Route::post('/pesan', [PesanController::class, 'store']);
+    Route::post('/pesan', [PesanController::class, 'store']);
+    Route::patch('/bookings/user/{userId}/status', [PesanController::class, 'updateStatusByUser']);
+
 // });
