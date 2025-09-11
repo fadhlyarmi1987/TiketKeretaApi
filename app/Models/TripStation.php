@@ -14,6 +14,7 @@ class TripStation extends Model
         'arrival_time',
         'departure_time',
         'station_order',
+        'day_offset',
     ];
 
     public function trip()

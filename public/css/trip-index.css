@@ -71,6 +71,12 @@
     margin-top: 5px;
     font-size: 13px;
 }
+.station-table span {
+    font-size: 0.75rem;
+    color: #dc2626; /* merah */
+    font-weight: 600;
+    margin-left: 4px;
+}
 
 .station-table th, .station-table td {
     border: 1px solid #ddd;
@@ -93,6 +99,7 @@
 }
 .btn-edit:hover {
     background: #e67e22;
+    scale: 0.93;
 }
 
 .btn-delete {
@@ -106,6 +113,7 @@
 }
 .btn-delete:hover {
     background: #c0392b;
+    scale: 0.93;
 }
 .btn {
     display: inline-block;

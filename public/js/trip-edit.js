@@ -40,7 +40,13 @@ document.addEventListener("DOMContentLoaded", function () {
           <input type="time" name="stations[${rowIndex}][departure_time]" class="form-control w-100">
         </td>
         <td class="text-center">
-          <button type="button" class="btn btn-outline-danger btn-sm btn-hapus-row removeRow">
+          <input type="hidden" name="stations[${rowIndex}][day_offset]" value="0">
+          <input type="checkbox" class="form-check-input"
+            name="stations[${rowIndex}][day_offset]"
+            value="1">
+        </td>
+        <td class="text-center">
+          <button type="button" class="btn btn-outline-danger btn-sm removeRow">
             <i class="bi bi-trash"></i> Hapus
           </button>
         </td>

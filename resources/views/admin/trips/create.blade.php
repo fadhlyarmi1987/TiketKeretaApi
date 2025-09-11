@@ -11,7 +11,7 @@
     <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
         🚄 Tambah Data Trip
     </h2>
-    
+
 
     <form method="POST" action="{{ route('trips.store') }}">
         @csrf
@@ -26,7 +26,7 @@
                 @endforeach
             </select>
         </div>
-        
+
         {{-- Stasiun & Jadwal --}}
         <div class="mb-4">
             <label class="form-label fw-semibold">🛤️ Rute Perjalanan (Stasiun & Jadwal)</label>
@@ -37,6 +37,7 @@
                             <th>Stasiun</th>
                             <th>Jam Tiba</th>
                             <th>Jam Berangkat</th>
+                            <th>Hari Berikutnya?</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -50,6 +51,13 @@
                             </td>
                             <td>
                                 <input type="time" name="stations[0][departure_time]" class="input-field w-100">
+                            </td>
+                            <td>
+                                <label>
+                                    <input type="hidden" name="stations[0][day_offset]" value="0">
+                                    <input type="checkbox" name="stations[0][day_offset]" value="1">
+                                    Hari berikutnya
+                                </label>
                             </td>
                             <td class="text-center">
                                 <button type="button" class="btn-danger">Hapus</button>
@@ -125,6 +133,13 @@
         <td><select name="stations[${index}][station_id]" class="station-select input-field w-100" required></select></td>
         <td><input type="time" name="stations[${index}][arrival_time]" class="input-field w-100"></td>
         <td><input type="time" name="stations[${index}][departure_time]" class="input-field w-100"></td>
+        <td>
+        <label>
+            <input type="hidden" name="stations[${index}][day_offset]" value="0">
+            <input type="checkbox" name="stations[${index}][day_offset]" value="1"> Hari berikutnya
+        </label>
+            </td>
+
         <td class="text-center">
             <button type="button" class="btn-danger" onclick="removeRow(this)">Hapus</button>
         </td>

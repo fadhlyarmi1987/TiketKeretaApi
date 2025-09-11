@@ -22,18 +22,16 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Kereta</label>
-                        <select name="train_id" class="form-select">
-                            @foreach($trains as $train)
-                                <option value="{{ $train->id }}" {{ $train->id == $trip->train_id ? 'selected' : '' }}>
-                                    {{ $train->name }}
-                                </option>
-                            @endforeach
-                        </select>
+                        <input type="text" class="form-control" value="{{ $trip->train->name }}" readonly>
+                        <input type="hidden" name="train_id" value="{{ $trip->train_id }}">
                     </div>
+
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Status</label>
-                        <input type="text" name="status" value="{{ $trip->status }}" class="form-control">
+                        <input type="text" class="form-control" value="{{ $trip->status }}" readonly>
+                        <input type="hidden" name="status" value="{{ $trip->status }}">
                     </div>
+
                 </div>
 
                 <div class="row mb-3">
@@ -41,9 +39,9 @@
                         <label class="form-label fw-semibold">Asal</label>
                         <select name="origin_station_id" class="form-select station-select">
                             @foreach($stations as $station)
-                                <option value="{{ $station->id }}" {{ $station->id == $trip->origin_station_id ? 'selected' : '' }}>
-                                    {{ $station->name }} ({{ $station->code }}) | {{ $station->city }} 
-                                </option>
+                            <option value="{{ $station->id }}" {{ $station->id == $trip->origin_station_id ? 'selected' : '' }}>
+                                {{ $station->name }} ({{ $station->code }}) | {{ $station->city }}
+                            </option>
                             @endforeach
                         </select>
                     </div>
@@ -51,9 +49,9 @@
                         <label class="form-label fw-semibold">Tujuan</label>
                         <select name="destination_station_id" class="form-select station-select">
                             @foreach($stations as $station)
-                                <option value="{{ $station->id }}" {{ $station->id == $trip->destination_station_id ? 'selected' : '' }}>
-                                    {{ $station->name }} ({{ $station->code }}) | {{ $station->city }}
-                                </option>
+                            <option value="{{ $station->id }}" {{ $station->id == $trip->destination_station_id ? 'selected' : '' }}>
+                                {{ $station->name }} ({{ $station->code }}) | {{ $station->city }}
+                            </option>
                             @endforeach
                         </select>
                     </div>
@@ -78,6 +76,7 @@
                                 <th>Stasiun</th>
                                 <th>Jam Tiba</th>
                                 <th>Jam Berangkat</th>
+                                <th>Beda Hari</th>
                                 <th class="text-center">Aksi</th>
                             </tr>
                         </thead>
@@ -87,9 +86,9 @@
                                 <td>
                                     <select name="stations[{{ $i }}][station_id]" class="form-select station-select">
                                         @foreach($stations as $station)
-                                            <option value="{{ $station->id }}" {{ $station->id == $ts->station_id ? 'selected' : '' }}>
-                                                {{ $station->name }} ({{ $station->code }}) | {{ $station->city }}
-                                            </option>
+                                        <option value="{{ $station->id }}" {{ $station->id == $ts->station_id ? 'selected' : '' }}>
+                                            {{ $station->name }} ({{ $station->code }}) | {{ $station->city }}
+                                        </option>
                                         @endforeach
                                     </select>
                                 </td>
@@ -100,6 +99,14 @@
                                     <input type="time" name="stations[{{ $i }}][departure_time]" value="{{ $ts->departure_time }}" class="form-control">
                                 </td>
                                 <td class="text-center">
+                                    <input type="hidden" name="stations[{{ $i }}][day_offset]" value="0">
+                                    <input type="checkbox" class="form-check-input"
+                                        name="stations[{{ $i }}][day_offset]"
+                                        value="1"
+                                        {{ !empty($ts->day_offset) && $ts->day_offset != 0 ? 'checked' : '' }}>
+                                </td>
+
+                                <td class="text-center">
                                     <button type="button" class="btn btn-outline-danger btn-sm removeRow">
                                         <i class="bi bi-trash"></i> Hapus
                                     </button>
@@ -107,6 +114,7 @@
                             </tr>
                             @endforeach
                         </tbody>
+
                     </table>
                 </div>
 
@@ -131,7 +139,12 @@
 
 {{-- JSON stasiun --}}
 <script type="application/json" id="stationsData">
-{!! $stations->map(fn($s) => ['id'=>$s->id,'name'=>$s->name,'code'=>$s->code,'city'=>$s->city])->values()->toJson() !!}
+{!! $stations->map(fn($s) => [
+    'id' => $s->id,
+    'name' => $s->name,
+    'code' => $s->code,
+    'city' => $s->city,
+])->values()->toJson(JSON_UNESCAPED_UNICODE) !!}
 </script>
 
 {{-- jQuery + Select2 --}}

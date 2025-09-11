@@ -49,34 +49,42 @@ class TripController extends Controller
     {
         $request->validate([
             'train_id' => 'required|exists:trains,id',
-            'travel_date' => 'date',
-            'stations' => 'required|array|min:2', // minimal asal & tujuan
+            'stations' => 'required|array|min:2',
             'stations.*.station_id' => 'required|exists:stations,id',
+            'stations.*.arrival_time' => 'nullable',
+            'stations.*.departure_time' => 'nullable',
+            'stations.*.day_offset' => 'nullable|in:0,1',
         ]);
 
-        // ambil stasiun pertama & terakhir
+        $train = Train::findOrFail($request->train_id);
         $firstStation = $request->stations[0];
         $lastStation = $request->stations[count($request->stations) - 1];
 
         $trip = Trip::create([
-            'train_id'   => $request->train_id,
-            'train_name' => Train::find($request->train_id)->name, // 🚀 simpan nama kereta
+            'train_id'   => $train->id,
+            'train_name' => $train->name,
             'origin_station_id' => $firstStation['station_id'],
             'destination_station_id' => $lastStation['station_id'],
-            'travel_date' => $request->travel_date,
-            'departure_time' => $firstStation['departure_time'],
-            'arrival_time' => $lastStation['arrival_time'],
+            'travel_date' => $request->travel_date ?? null,
+            'departure_time' => $firstStation['departure_time'] ?? null,
+            'arrival_time' => $lastStation['arrival_time'] ?? null,
         ]);
 
+        // ⬇️ Logika akumulasi day_offset
+        $currentOffset = 0;
 
-        // Simpan detail stasiun yang dilewati
         foreach ($request->stations as $order => $st) {
-            TripStation::create([
-                'trip_id' => $trip->id,
-                'station_id' => $st['station_id'],
-                'arrival_time' => $st['arrival_time'] ?? null,
+            // kalau user centang day_offset di baris ini, tambah offset
+            if (!empty($st['day_offset']) && $st['day_offset'] == 1) {
+                $currentOffset++;
+            }
+
+            $trip->tripStations()->create([
+                'station_id'     => $st['station_id'],
+                'arrival_time'   => $st['arrival_time'] ?? null,
                 'departure_time' => $st['departure_time'] ?? null,
-                'station_order' => $order + 1,
+                'station_order'  => $order + 1,
+                'day_offset'     => $currentOffset, // otomatis ikut akumulasi
             ]);
         }
 
@@ -100,13 +108,13 @@ class TripController extends Controller
             'train_id' => 'required|exists:trains,id',
             'origin_station_id' => 'required|exists:stations,id',
             'destination_station_id' => 'required|exists:stations,id',
-            'travel_date' => 'date',
             'departure_time' => 'nullable',
             'arrival_time' => 'nullable',
             'status' => 'nullable|string',
             'stations.*.station_id' => 'required|exists:stations,id',
             'stations.*.arrival_time' => 'nullable',
             'stations.*.departure_time' => 'nullable',
+            'stations.*.day_offset' => 'nullable|integer|min:0', // ✅ validasi tambahan
         ]);
 
         // update data trip utama
@@ -114,7 +122,6 @@ class TripController extends Controller
             'train_id' => $request->train_id,
             'origin_station_id' => $request->origin_station_id,
             'destination_station_id' => $request->destination_station_id,
-            'travel_date' => $request->travel_date,
             'departure_time' => $request->departure_time,
             'arrival_time' => $request->arrival_time,
             'status' => $request->status,
@@ -126,18 +133,21 @@ class TripController extends Controller
 
         foreach ($request->stations as $i => $stationData) {
             $station = Station::find($stationData['station_id']);
+
             $trip->tripStations()->create([
-                'station_id' => $station->id,
-                'train_name' => $trip->train->name,
-                'station_name' => $station->name,
-                'arrival_time' => $stationData['arrival_time'],
-                'departure_time' => $stationData['departure_time'],
-                'station_order' => $i + 1,
+                'station_id'     => $station->id,
+                'train_name'     => $trip->train->name,
+                'station_name'   => $station->name,
+                'arrival_time'   => $stationData['arrival_time'] ?? null,
+                'departure_time' => $stationData['departure_time'] ?? null,
+                'station_order'  => $i + 1,
+                'day_offset'     => $stationData['day_offset'] ?? 0, // ✅ pakai $stationData
             ]);
         }
 
-        return redirect()->route('trips.index')->with('success', 'Trip berhasil diupdate');
+        return redirect()->route('trips.index')->with('success', 'Trip berhasil diperbarui.');
     }
+
 
     public function destroy(Trip $trip)
     {

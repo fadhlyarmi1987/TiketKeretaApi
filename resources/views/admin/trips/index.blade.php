@@ -21,10 +21,11 @@
         <table class="trip-table">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>No</th>
                     <th>Kereta</th>
                     <th>Asal</th>
                     <th>Tujuan</th>
+                    <th>ID</th>
                     <th>Jadwal Stasiun</th>
                     <th>Aksi</th>
                 </tr>
@@ -32,10 +33,11 @@
             <tbody>
                 @forelse($trips as $trip)
                 <tr>
-                    <td>{{ $trip->id }}</td>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $trip->train->name }}</td>
                     <td>{{ $trip->origin->name }} ({{ $trip->origin->city }})</td>
                     <td>{{ $trip->destination->name }} ({{ $trip->destination->city }})</td>
+                    <td>{{ $trip->id }}</td>
                     <td>
                         <table class="station-table">
                             <thead>
@@ -49,20 +51,32 @@
                             <tbody>
                                 @php
                                 $tripStations = $trip->tripStations()
-                                ->orderByRaw("COALESCE(arrival_time, departure_time)")
+                                ->orderBy('station_order') // urut berdasarkan order aslinya
                                 ->get();
+                                $lastOffset = 0;
                                 @endphp
 
                                 @foreach($tripStations as $index => $ts)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td> <!-- otomatis nomor urut sesuai jam -->
+                                    <td>{{ $index + 1 }}</td>
                                     <td>{{ $ts->station->name }} ({{ $ts->station->city }})</td>
-                                    <td>{{ $ts->arrival_time ?? '-' }}</td>
-                                    <td>{{ $ts->departure_time ?? '-' }}</td>
+                                    <td>
+                                        {{ $ts->arrival_time ?? '-' }}
+                                        @if($ts->day_offset > $lastOffset && $ts->arrival_time)
+                                        <span class="text-xs text-red-500 font-semibold">(+{{ $ts->day_offset }}Hari)</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        {{ $ts->departure_time ?? '-' }}
+                                        @if($ts->day_offset > $lastOffset && $ts->departure_time)
+                                        <span class="text-xs text-red-500 font-semibold">(+{{ $ts->day_offset }}Hari)</span>
+                                        @endif
+                                    </td>
                                 </tr>
+                                @php $lastOffset = $ts->day_offset; @endphp
                                 @endforeach
-                            </tbody>
 
+                            </tbody>
                         </table>
                     </td>
                     <td class="actions">
