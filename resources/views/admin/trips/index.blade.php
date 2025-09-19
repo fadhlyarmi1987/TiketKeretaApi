@@ -51,7 +51,8 @@
                             <tbody>
                                 @php
                                 $tripStations = $trip->tripStations()
-                                ->orderBy('station_order') // urut berdasarkan order aslinya
+                                ->orderBy('day_offset')
+                                ->orderByRaw("COALESCE(departure_time, arrival_time) ASC")
                                 ->get();
                                 $lastOffset = 0;
                                 @endphp
@@ -75,8 +76,8 @@
                                 </tr>
                                 @php $lastOffset = $ts->day_offset; @endphp
                                 @endforeach
-
                             </tbody>
+
                         </table>
                     </td>
                     <td class="actions">

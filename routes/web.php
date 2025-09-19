@@ -1,10 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\BookingController as ApiBookingController;
-use App\Http\Controllers\Api\StationController as ApiStationController;
-use App\Http\Controllers\Api\TrainController;
-use App\Http\Controllers\Api\TripStationController;
-use App\Http\Controllers\API\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
